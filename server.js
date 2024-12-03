@@ -184,6 +184,24 @@ app.get('/devices', async (req,res) => {
     res.status(200).json(devices);
 });
 
+// Endpoint para pegar os valores `daily` dos dispositivos
+app.get('/devices/daily', async (req, res) => {
+    try {
+        // Buscando todos os dispositivos com os campos 'name' e 'daily'
+        const devices = await prisma.device.findMany({
+            select: {
+                name: true,
+                daily: true
+            }
+        });
+
+        // Retorna os dispositivos com os valores 'name' e 'daily'
+        res.status(200).json(devices);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao obter dispositivos', error: error.message });
+    }
+});
+
 // Editar dispositivo
 app.put('/devices/:id', async (req,res) => {
     //users.push(req.body);
