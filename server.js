@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import bodyParser from "body-parser"
 
 const app = express();
-const cors = require('cors');
 const prisma = new PrismaClient(); // Prisma
 const PORT = 8081
 
