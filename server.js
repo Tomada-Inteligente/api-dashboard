@@ -184,35 +184,39 @@ app.get('/devices', async (req,res) => {
     res.status(200).json(devices);
 });
 
-// Endpoint para pegar os valores `daily` dos dispositivos
 app.get('/devices/daily', async (req, res) => {
     try {
-        // Buscando todos os dispositivos com os campos 'name' e 'daily'
+        // Buscando todos os dispositivos com os campos 'name', 'daily' e 'weekly'
         const devices = await prisma.device.findMany({
             select: {
                 name: true,
-                daily: true
+                daily: true,
+                weekly: true // Garantir que 'weekly' também é retornado
             }
         });
 
-        // Retorna os dispositivos com os valores 'name' e 'daily'
+        // Retorna os dispositivos com os valores 'name', 'daily' e 'weekly'
         res.status(200).json(devices);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao obter dispositivos', error: error.message });
     }
 });
 
+
 // Editar dispositivo
 app.put('/devices/:id', async (req,res) => {
     //users.push(req.body);
     await prisma.device.update({ // Prisma
+        where: {
+            id: req.params.id
+        },
         data: {
             name: req.body.name,
             daily: req.body.daily,
             weekly: req.body.weekly
         }
     });
-
+        
     res.status(201).json(req.body);
 })
 
